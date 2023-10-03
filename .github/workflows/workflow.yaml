@@ -18,16 +18,16 @@ jobs:
         git config --global user.email "arlenaraujo12@gmail.com"
         git config --global user.name "arlenresende"
 
-    - name: Remover a pastaB do branch main
+    - name: Remover a pastab do branch main
       run: |
         # Certifique-se de estar na branch main
         git checkout main
 
-        # Remova a pastaB do diretório de trabalho, mas não do histórico do Git
-        git rm -r --cached pastaB
+        # Remova a pastab do diretório de trabalho, mas não do histórico do Git
+        git rm -r --cached pastab
 
         # Faça o commit das alterações
-        git commit -m "Remover a pastaB do branch main"
+        git commit -m "Remover a pastab do branch main"
 
     - name: Usar o Token de Acesso Pessoal
       env:
