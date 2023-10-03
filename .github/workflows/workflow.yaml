@@ -1,0 +1,20 @@
+name: Atualizar Branches de Teste
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  atualizar-branches-de-teste:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do código-fonte
+      uses: actions/checkout@v2
+
+    - name: Atualizar branch testea
+      run: git checkout testea && git pull origin main && git push origin testea
+
+    - name: Atualizar branch testeb
+      run: git checkout testeb && git pull origin main && git push origin testeb
