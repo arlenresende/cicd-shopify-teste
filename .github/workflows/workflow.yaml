@@ -13,7 +13,7 @@ jobs:
     - name: Checkout do código-fonte
       uses: actions/checkout@v3
 
-       - name: Configurar Git
+    - name: Configurar Git
       run: |
         git config --global user.email "you@example.com"
         git config --global user.name "Seu Nome"
