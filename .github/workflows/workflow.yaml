@@ -14,18 +14,26 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2.4.0  # Atualizado para uma versão compatível
+      uses: actions/setup-node@v2.4.0
       with:
-        node-version: '16'  # Use a versão desejada do Node.js
+        node-version: '16'
 
-    - name: Atualizar branch testea
+    - name: Verificar se a branch testea existe
       run: |
-        git checkout testea
-        git pull origin main
-        git push origin testea
+        if git show-ref --quiet refs/heads/testea; then
+          git checkout testea
+          git pull origin main
+          git push origin testea
+        else
+          echo "A branch 'testea' não existe no repositório."
+        fi
 
-    - name: Atualizar branch testeb
+    - name: Verificar se a branch testeb existe
       run: |
-        git checkout testeb
-        git pull origin main
-        git push origin testeb
+        if git show-ref --quiet refs/heads/testeb; then
+          git checkout testeb
+          git pull origin main
+          git push origin testeb
+        else
+          echo "A branch 'testeb' não existe no repositório."
+        fi
