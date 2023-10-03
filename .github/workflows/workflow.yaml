@@ -15,8 +15,8 @@ jobs:
 
     - name: Configurar Git
       run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Seu Nome"
+        git config --global user.email "arlenaraujo12@gmail.com"
+        git config --global user.name "arlenresende"
 
     - name: Usar o Token de Acesso Pessoal
       env:
