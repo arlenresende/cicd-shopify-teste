@@ -11,7 +11,7 @@ jobs:
     
     steps:
     - name: Checkout do código-fonte
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Node.js
       uses: actions/setup-node@v2.4.0
@@ -22,7 +22,8 @@ jobs:
       run: |
         if git show-ref --quiet refs/heads/testea; then
           git checkout testea
-          git reset --hard origin/main
+          git fetch origin main:main
+          git reset --hard main
           git push origin testea --force
         else
           echo "A branch 'testea' não existe no repositório."
@@ -32,7 +33,8 @@ jobs:
       run: |
         if git show-ref --quiet refs/heads/testeb; then
           git checkout testeb
-          git reset --hard origin/main
+          git fetch origin main:main
+          git reset --hard main
           git push origin testeb --force
         else
           echo "A branch 'testeb' não existe no repositório."
