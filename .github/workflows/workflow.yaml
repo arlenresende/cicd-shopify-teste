@@ -23,7 +23,8 @@ jobs:
       env:
         GIT_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}
       run: |
-        if git show-ref --quiet refs/heads/testea; then
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+        if git show-ref --quiet refs/remotes/origin/testea; then
           git checkout testea
           git fetch origin main:main
           git reset --hard main
@@ -34,11 +35,13 @@ jobs:
 
     - name: Verificar se a branch testeb existe
       run: |
-        if git show-ref --quiet refs/heads/testeb; then
+        run: |
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+        if git show-ref --quiet refs/remotes/origin/testeb; then
           git checkout testeb
           git fetch origin main:main
           git reset --hard main
-          git push origin testeb --force
+          git push origin testea --force
         else
-          echo "A branch 'testeb' não existe no repositório."
+          echo "A branch 'testea' não existe no repositório."
         fi
