@@ -13,14 +13,24 @@ jobs:
     - name: Checkout do código-fonte
       uses: actions/checkout@v3
 
-     - name: Atualizar branch testea
+    - name: Verificar se a branch testea existe
       run: |
-        git checkout testea
-        git pull origin main
-        git push origin testea
+        if git show-ref --quiet refs/heads/testea; then
+          git checkout testea
+          git fetch origin main:main
+          git reset --hard main
+          git push origin testea --force
+        else
+          echo "A branch 'testea' não existe no repositório."
+        fi
 
-    - name: Atualizar branch testeb
+    - name: Verificar se a branch testeb existe
       run: |
-        git checkout testeb
-        git pull origin main
-        git push origin testeb
+        if git show-ref --quiet refs/heads/testeb; then
+          git checkout testeb
+          git fetch origin main:main
+          git reset --hard main
+          git push origin testeb --force
+        else
+          echo "A branch 'testeb' não existe no repositório."
+        fi
