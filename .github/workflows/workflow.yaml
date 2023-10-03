@@ -22,8 +22,8 @@ jobs:
       run: |
         if git show-ref --quiet refs/heads/testea; then
           git checkout testea
-          git pull origin main
-          git push origin testea
+          git reset --hard origin/main
+          git push origin testea --force
         else
           echo "A branch 'testea' não existe no repositório."
         fi
@@ -32,8 +32,8 @@ jobs:
       run: |
         if git show-ref --quiet refs/heads/testeb; then
           git checkout testeb
-          git pull origin main
-          git push origin testeb
+          git reset --hard origin/main
+          git push origin testeb --force
         else
           echo "A branch 'testeb' não existe no repositório."
         fi
