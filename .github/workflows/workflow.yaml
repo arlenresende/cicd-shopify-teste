@@ -38,7 +38,7 @@ jobs:
           git checkout testea
           git fetch origin main:main
           git reset --hard main
-          git push origin testea --force
+          git push origin main:testea --force
         else
           echo "A branch 'testea' não existe no repositório."
         fi
@@ -50,7 +50,7 @@ jobs:
           git checkout testeb
           git fetch origin main:main
           git reset --hard main
-          git push origin testeb --force
+          git push origin main:testeb --force
         else
           echo "A branch 'testeb' não existe no repositório."
         fi
