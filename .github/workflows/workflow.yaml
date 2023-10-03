@@ -13,11 +13,6 @@ jobs:
     - name: Checkout do código-fonte
       uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2.4.0
-      with:
-        node-version: '16'
-
     - name: Verificar se a branch testea existe
       run: |
         if git show-ref --quiet refs/heads/testea; then
