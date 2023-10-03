@@ -1,4 +1,5 @@
 name: Atualizar Branches de Teste
+
 on:
   push:
     branches:
@@ -17,20 +18,6 @@ jobs:
         git config --global user.email "arlenaraujo12@gmail.com"
         git config --global user.name "arlenresende"
 
-    - name: Configurar rebase para pull
-      run: git config pull.rebase true
-
-    - name: Remover a pastab do branch main
-      run: |
-        # Certifique-se de estar na branch main
-        git checkout main
-
-        # Remova a pastab do diretório de trabalho, mas não do histórico do Git
-        git rm -r --cached pastab
-
-        # Faça o commit das alterações
-        git commit -m "Remover a pastab do branch main"
-
     - name: Usar o Token de Acesso Pessoal
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,7 +25,7 @@ jobs:
         git fetch --all  # Certifique-se de buscar todas as branches remotas
         if git show-ref --quiet refs/remotes/origin/testea; then
           git checkout testea
-          git pull origin main  # Atualize a branch testea com a main usando rebase
+          git pull origin main  # Atualize a branch testea com a main usando merge
           git push origin testea --force
         else
           echo "A branch 'testea' não existe no repositório."
@@ -49,7 +36,7 @@ jobs:
         git fetch --all  # Certifique-se de buscar todas as branches remotas
         if git show-ref --quiet refs/remotes/origin/testeb; then
           git checkout testeb
-          git pull origin main  # Atualize a branch testeb com a main usando rebase
+          git pull origin main  # Atualize a branch testeb com a main usando merge
           git push origin testeb --force
         else
           echo "A branch 'testeb' não existe no repositório."
