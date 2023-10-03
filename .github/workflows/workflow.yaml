@@ -1,5 +1,4 @@
 name: Atualizar Branches de Teste
-
 on:
   push:
     branches:
