@@ -7,6 +7,7 @@ on:
 jobs:
   atualizar-branches-de-teste:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout do código-fonte
       uses: actions/checkout@v2
@@ -24,53 +25,28 @@ jobs:
         # Certifique-se de estar na branch main
         git checkout main
 
-        # Remova a pasta pastab e .github do diretório de trabalho, mas não do histórico do Git
-        git rm -r --cached pastab
+        # Restaure a pasta pastab na branch main, se ela foi removida em commits anteriores
+        git checkout main -- pastab
+        git add pastab
+        git commit -m "Restaurar pastab na branch main"
 
-        # Ignorar arquivos não rastreados em pastab e .github para evitar conflitos
-        git clean -f pastab .github
-
-        # Adicione um arquivo temporário antes de efetuar o commit
-        touch temp.txt
-        git add temp.txt
-
-        # Faça o commit das alterações, forçando a reescrita dos arquivos
-        git commit -m "Remover pastab do branch main"
-
-        # Remova o arquivo temporário
-        rm temp.txt
-
-        # Restaure a pasta .github na branch main
-        git checkout main -- .github
-        git add .github
-        git commit -m "Restaurar .github na branch main"
-
-    - name: Usar o Token de Acesso Pessoal
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Remover a pasta .github das branches b1 e b2
       run: |
-        git fetch --all  # Certifique-se de buscar todas as branches remotas
-
         # Verifique se a branch b1 existe
         if git show-ref --quiet refs/remotes/origin/b1; then
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
 
-          # Remova a pasta pastab após a atualização da branch b1
-          git rm -r --cached pastab
+          # Remova a pasta .github após a atualização da branch b1
+          git rm -r .github
 
-          # Ignorar arquivos não rastreados em pastab para evitar conflitos
-          git clean -f pastab
+          # Faça o commit da remoção da pasta
+          git commit -m "Remover .github da branch b1"
 
-          # Adicione um arquivo temporário antes de efetuar o commit
-          touch temp.txt
-          git add temp.txt
-
-          # Faça o commit das alterações, forçando a reescrita dos arquivos
-          git commit -m "Remover pastab da branch b1"
-
-          # Remova o arquivo temporário
-          rm temp.txt
+          # Restaure a pasta .github na branch b1
+          git checkout main -- .github
+          git add .github
+          git commit -m "Restaurar .github na branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -80,25 +56,26 @@ jobs:
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
 
-          # Remova a pasta pastab após a atualização da branch b2
-          git rm -r --cached pastab
+          # Remova a pasta .github após a atualização da branch b2
+          git rm -r .github
 
-          # Ignorar arquivos não rastreados em pastab para evitar conflitos
-          git clean -f pastab
+          # Faça o commit da remoção da pasta
+          git commit -m "Remover .github da branch b2"
 
-          # Adicione um arquivo temporário antes de efetuar o commit
-          touch temp.txt
-          git add temp.txt
-
-          # Faça o commit das alterações, forçando a reescrita dos arquivos
-          git commit -m "Remover pastab da branch b2"
-
-          # Remova o arquivo temporário
-          rm temp.txt
+          # Restaure a pasta .github na branch b2
+          git checkout main -- .github
+          git add .github
+          git commit -m "Restaurar .github na branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, as pastas pastab não estarão nas branches b1 e b2
+    - name: Usar o Token de Acesso Pessoal
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+
+        # Agora, as pastas pastab e .github não estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
