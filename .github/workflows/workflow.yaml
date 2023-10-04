@@ -92,3 +92,5 @@ jobs:
         # Empurre as branches b1 e b2 atualizadas para o repositório remoto
         git push origin b1
         git push origin b2
+
+        
