@@ -26,13 +26,18 @@ jobs:
         git checkout main
 
         # Remova a pasta pastab e .github do diretório de trabalho, mas não do histórico do Git
-        git rm -r --cached pastab .github
+        git rm -r --cached pastab
 
         # Ignorar arquivos não rastreados em pastab e .github para evitar conflitos
-        git clean -f pastab .github
+        git clean -f pastab
 
         # Faça o commit das alterações, forçando a reescrita dos arquivos
-        git commit -m "Remover pastab e .github do branch main"
+        git commit -m "Remover pastab do branch main"
+
+        # Restaure a pasta .github na branch main
+        git checkout main -- .github
+        git add .github
+        git commit -m "Restaurar .github na branch main"
 
     - name: Usar o Token de Acesso Pessoal
       env:
@@ -45,13 +50,13 @@ jobs:
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
 
-          # Remova a pasta pastab e .github após a atualização da branch b1
-          git rm -r --cached pastab .github
+          # Remova a pasta pastab após a atualização da branch b1
+          git rm -r --cached pastab
 
-          # Ignorar arquivos não rastreados em pastab e .github para evitar conflitos
-          git clean -f pastab .github
+          # Ignorar arquivos não rastreados em pastab para evitar conflitos
+          git clean -f pastab
 
-          git commit -m "Remover pastab e .github da branch b1"
+          git commit -m "Remover pastab da branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -61,24 +66,18 @@ jobs:
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
 
-          # Remova a pasta pastab e .github após a atualização da branch b2
-          git rm -r --cached pastab .github
+          # Remova a pasta pastab após a atualização da branch b2
+          git rm -r --cached pastab
 
-          # Ignorar arquivos não rastreados em pastab e .github para evitar conflitos
-          git clean -f pastab .github
+          # Ignorar arquivos não rastreados em pastab para evitar conflitos
+          git clean -f pastab
 
-          git commit -m "Remover pastab e .github da branch b2"
+          git commit -m "Remover pastab da branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, as pastas pastab e .github não estarão nas branches b1 e b2
+        # Agora, as pastas pastab não estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
 
-        # Restaure as pastas pastab e .github na branch main
-        git checkout main
-        git checkout main -- pastab .github
-        git add pastab .github
-        git commit -m "Restaurar pastab e .github na branch main"
-        git push origin main
