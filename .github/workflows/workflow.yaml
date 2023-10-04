@@ -39,17 +39,19 @@ jobs:
         if git show-ref --quiet refs/remotes/origin/testea; then
           git checkout testea
           git pull origin main  # Atualize a branch testea com a main usando rebase
+          git rm -r --cached pastab  # Remova a pastab da branch testea
+          git commit -m "Remover a pastab da branch testea"
           git push origin testea --force
         else
           echo "A branch 'testea' não existe no repositório."
         fi
 
-    - name: Verificar se a branch testeb existe
-      run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
         if git show-ref --quiet refs/remotes/origin/testeb; then
           git checkout testeb
           git pull origin main  # Atualize a branch testeb com a main usando rebase
+          git rm -r --cached pastab  # Remova a pastab da branch testeb
+          git commit -m "Remover a pastab da branch testeb"
           git push origin testeb --force
         else
           echo "A branch 'testeb' não existe no repositório."
