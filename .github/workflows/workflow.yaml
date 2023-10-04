@@ -42,4 +42,14 @@ jobs:
         git checkout br2
         git pull origin main  # Atualize a branch br2 com a main usando rebase
 
-        # Remova todas as pastas existentes
+        # Remova todas as pastas existentes na branch br2 (exceto pastab e .github)
+        git rm -r --cached .
+        git clean -fd
+
+        # Move todos os arquivos da branch main para br2 (exceto pastab e .github)
+        git checkout main -- .
+        git checkout -- pastab .github
+        git reset pastab .github
+        git add .
+        git commit -m "Mover arquivos da branch main para br2"
+        git push origin br2
