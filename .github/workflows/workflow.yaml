@@ -26,30 +26,44 @@ jobs:
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
 
+        # Certifique-se de que a pasta pastab e .github não sejam rastreadas
+        git rm -r --cached pastab .github
+
+        # Faça o commit das alterações, forçando a reescrita dos arquivos
+        git commit -m "Remover pastab e .github da index"
+
+        # Verifique se a branch b1 existe
         if git show-ref --quiet refs/remotes/origin/b1; then
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
-          
-          # Garanta que as pastas "pastab" e .github/workflows permaneçam intactas na branch b1
-          git checkout main -- pastab .github/workflows
-          git add pastab .github/workflows
-          git commit -m "Manter pastab e .github/workflows na branch b1"
+
+          # Restaure a pasta pastab e .github após a atualização da branch b1
+          git checkout main -- pastab .github
+          git add pastab .github
+          git commit -m "Restaurar pastab e .github na branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
 
+        # Verifique se a branch b2 existe
         if git show-ref --quiet refs/remotes/origin/b2; then
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
-          
-          # Garanta que as pastas "pastab" e .github/workflows permaneçam intactas na branch b2
-          git checkout main -- pastab .github/workflows
-          git add pastab .github/workflows
-          git commit -m "Manter pastab e .github/workflows na branch b2"
+
+          # Restaure a pasta pastab e .github após a atualização da branch b2
+          git checkout main -- pastab .github
+          git add pastab .github
+          git commit -m "Restaurar pastab e .github na branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, as pastas "pastab" e .github/workflows permanecerão intactas na branch main e nas branches de teste.
+        # Agora, as pastas pastab e .github não estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
+
+        # Para garantir que as pastas permaneçam na branch main, faça um commit adicional
+        git checkout main
+        git add pastab .github
+        git commit -m "Manter pastab e .github na branch main"
+        git push origin main
