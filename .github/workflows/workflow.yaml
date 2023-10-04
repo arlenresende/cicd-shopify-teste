@@ -31,7 +31,17 @@ jobs:
         # Faça o commit das alterações
         git commit -m "Remover a pastab do branch main"
 
-    - name: Usar o Token de Acesso Pessoal
+        # Push forçado para a branch main
+        git push origin main --force
+
+    - name: Verificar e descartar arquivos não rastreados (main)
+      run: |
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+        if git status --porcelain | grep "^\?\?"; then
+          git clean -f -d  # Descarte os arquivos não rastreados
+        fi
+
+    - name: Usar o Token de Acesso Pessoal (testea)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
@@ -46,6 +56,17 @@ jobs:
           echo "A branch 'testea' não existe no repositório."
         fi
 
+    - name: Verificar e descartar arquivos não rastreados (testea)
+      run: |
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+        if git status --porcelain | grep "^\?\?"; then
+          git clean -f -d  # Descarte os arquivos não rastreados
+        fi
+
+    - name: Usar o Token de Acesso Pessoal (testeb)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
         if git show-ref --quiet refs/remotes/origin/testeb; then
           git checkout testeb
@@ -55,4 +76,11 @@ jobs:
           git push origin testeb --force
         else
           echo "A branch 'testeb' não existe no repositório."
+        fi
+
+    - name: Verificar e descartar arquivos não rastreados (testeb)
+      run: |
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+        if git status --porcelain | grep "^\?\?"; then
+          git clean -f -d  # Descarte os arquivos não rastreados
         fi
