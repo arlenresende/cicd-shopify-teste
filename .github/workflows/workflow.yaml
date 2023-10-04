@@ -36,9 +36,18 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
+
+        # Remova a pasta "pastab" do diretório de trabalho temporariamente
+        rm -rf pastab
+
         if git show-ref --quiet refs/remotes/origin/testa; then
           git checkout testa
           git pull origin main  # Atualize a branch testa com a main usando rebase
+          
+          # Restaure a pasta "pastab" após a atualização da branch testa
+          git checkout main -- pastab
+          git add pastab
+          git commit -m "Restaurar a pastab na branch main"
         else
           echo "A branch 'testa' não existe no repositório."
         fi
@@ -46,11 +55,15 @@ jobs:
         if git show-ref --quiet refs/remotes/origin/testb; then
           git checkout testb
           git pull origin main  # Atualize a branch testb com a main usando rebase
+          
+          # Restaure a pasta "pastab" após a atualização da branch testb
+          git checkout main -- pastab
+          git add pastab
+          git commit -m "Restaurar a pastab na branch main"
         else
           echo "A branch 'testb' não existe no repositório."
         fi
 
         # Agora, a pasta "pastab" não estará nas branches "testa" e "testb"
-
         git push origin testa
         git push origin testb
