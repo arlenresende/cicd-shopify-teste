@@ -1,0 +1,55 @@
+name: Atualizar Branches de Teste
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  atualizar-branches-de-teste:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do código-fonte
+      uses: actions/checkout@v2
+
+    - name: Configurar Git
+      run: |
+        git config --global user.email "arlenaraujo12@gmail.com"
+        git config --global user.name "arlenresende"
+
+    - name: Configurar rebase para pull
+      run: git config pull.rebase true
+
+    - name: Usar o Token de Acesso Pessoal
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
+
+        if git show-ref --quiet refs/remotes/origin/b1; then
+          git checkout b1
+          git pull origin main  # Atualize a branch b1 com a main usando rebase
+          
+          # Garanta que as pastas "pastab" e .github/workflows permaneçam intactas na branch b1
+          git checkout main -- pastab .github/workflows
+          git add pastab .github/workflows
+          git commit -m "Manter pastab e .github/workflows na branch b1"
+        else
+          echo "A branch 'b1' não existe no repositório."
+        fi
+
+        if git show-ref --quiet refs/remotes/origin/b2; then
+          git checkout b2
+          git pull origin main  # Atualize a branch b2 com a main usando rebase
+          
+          # Garanta que as pastas "pastab" e .github/workflows permaneçam intactas na branch b2
+          git checkout main -- pastab .github/workflows
+          git add pastab .github/workflows
+          git commit -m "Manter pastab e .github/workflows na branch b2"
+        else
+          echo "A branch 'b2' não existe no repositório."
+        fi
+
+        # Agora, as pastas "pastab" e .github/workflows permanecerão intactas na branch main e nas branches de teste.
+        git push origin b1
+        git push origin b2
