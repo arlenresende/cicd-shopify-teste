@@ -20,7 +20,7 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
-    - name: Mover todos os arquivos, exceto pastab e .github, para as branches br1 e br2
+    - name: Mover arquivos para a branch br1
       run: |
         # Verifique se a branch br1 existe
         if git show-ref --quiet refs/remotes/origin/br1; then
@@ -37,6 +37,8 @@ jobs:
           echo "A branch 'br1' não existe no repositório."
         fi
 
+    - name: Mover arquivos para a branch br2
+      run: |
         # Verifique se a branch br2 existe
         if git show-ref --quiet refs/remotes/origin/br2; then
           git checkout br2
