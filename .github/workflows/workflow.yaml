@@ -20,45 +20,75 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
-    - name: Mover arquivos para a branch br1
+    - name: Atualizar branch b1
       run: |
-        # Verifique se a branch br1 existe
-        if git show-ref --quiet refs/remotes/origin/br1; then
-          git checkout br1
-          git pull origin main  # Atualize a branch br1 com a main usando rebase
-
-          # Mova todos os arquivos, exceto pastab e .github, da branch main para br1
-          git checkout main -- .
-          git checkout -- pastab .github
-          git reset pastab .github
-          git add .
-          git commit -m "Mover arquivos da branch main para br1"
-        else
-          echo "A branch 'br1' não existe no repositório."
+        # Certifique-se de que a branch b1 existe no repositório
+        if ! git show-ref --quiet refs/remotes/origin/b1; then
+          git branch b1
+          git push origin b1
         fi
 
-    - name: Mover arquivos para a branch br2
-      run: |
-        # Verifique se a branch br2 existe
-        if git show-ref --quiet refs/remotes/origin/br2; then
-          git checkout br2
-          git pull origin main  # Atualize a branch br2 com a main usando rebase
+        # Certifique-se de estar na branch b1
+        git checkout b1
 
-          # Mova todos os arquivos, exceto pastab e .github, da branch main para br2
-          git checkout main -- .
-          git checkout -- pastab .github
-          git reset pastab .github
-          git add .
-          git commit -m "Mover arquivos da branch main para br2"
-        else
-          echo "A branch 'br2' não existe no repositório."
+        # Limpe a branch b1, mantendo apenas pastab e .github
+        git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git rm --cached
+
+        # Faça o commit das alterações
+        git commit -m "Limpar branch b1"
+
+        # Verifique se a branch main existe
+        if git show-ref --quiet refs/remotes/origin/main; then
+          git checkout main
+
+          # Copie todos os arquivos da branch main, exceto pastab e .github
+          git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git checkout main --
+
+          # Faça o commit das alterações
+          git commit -m "Atualizar branch b1 com arquivos da main"
         fi
+
+        # Empurre as alterações para a branch b1
+        git push origin b1
+
+    - name: Atualizar branch b2
+      run: |
+        # Certifique-se de que a branch b2 existe no repositório
+        if ! git show-ref --quiet refs/remotes/origin/b2; then
+          git branch b2
+          git push origin b2
+        fi
+
+        # Certifique-se de estar na branch b2
+        git checkout b2
+
+        # Limpe a branch b2, mantendo apenas pastab e .github
+        git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git rm --cached
+
+        # Faça o commit das alterações
+        git commit -m "Limpar branch b2"
+
+        # Verifique se a branch main existe
+        if git show-ref --quiet refs/remotes/origin/main; then
+          git checkout main
+
+          # Copie todos os arquivos da branch main, exceto pastab e .github
+          git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git checkout main --
+
+          # Faça o commit das alterações
+          git commit -m "Atualizar branch b2 com arquivos da main"
+        fi
+
+        # Empurre as alterações para a branch b2
+        git push origin b2
 
     - name: Usar o Token de Acesso Pessoal
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git fetch --all  # Certifique-se de buscar todas as branches remotas
+        # Certifique-se de buscar todas as branches remotas
+        git fetch --all
 
-        git push origin HEAD:br1
-        git push origin HEAD:br2
+        # Empurre as branches b1 e b2 atualizadas para o repositório remoto
+        git push origin b1
+        git push origin b2
