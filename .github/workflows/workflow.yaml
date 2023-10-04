@@ -28,8 +28,11 @@ jobs:
         # Remova a pastab do diretório de trabalho, mas não do histórico do Git
         git rm -r --cached pastab
 
+        # Remova a pasta .github/workflows do diretório de trabalho, mas não do histórico do Git
+        git rm -r --cached .github/workflows
+
         # Faça o commit das alterações
-        git commit -m "Remover a pastab do branch main"
+        git commit -m "Remover a pastab e .github/workflows do branch main"
 
         # Push forçado para a branch main
         git push origin main --force
@@ -49,7 +52,7 @@ jobs:
         if git show-ref --quiet refs/remotes/origin/testa; then
           git checkout testa
           git pull origin main  # Atualize a branch testa com a main usando rebase
-          
+
           # Restaure a pasta "pastab" após a atualização da branch testa
           git checkout main -- pastab
           git add pastab
@@ -66,7 +69,7 @@ jobs:
         if git show-ref --quiet refs/remotes/origin/testb; then
           git checkout testb
           git pull origin main  # Atualize a branch testb com a main usando rebase
-          
+
           # Restaure a pasta "pastab" após a atualização da branch testb
           git checkout main -- pastab
           git add pastab
@@ -80,6 +83,6 @@ jobs:
           echo "A branch 'testb' não existe no repositório."
         fi
 
-        # Agora, a pasta "pastab" não estará nas branches "testa" e "testb"
+        # Agora, a pasta "pastab" e .github/workflows não estarão nas branches "testa" e "testb"
         git push origin testa
         git push origin testb
