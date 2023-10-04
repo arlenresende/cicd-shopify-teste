@@ -20,21 +20,21 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
-    - name: Mover todos os arquivos, exceto pastab e .github, para as branches b1 e b2
+    - name: Mover todos os arquivos, exceto pastab e .github, para as branches br1 e b2
       run: |
-        # Verifique se a branch b1 existe
-        if git show-ref --quiet refs/remotes/origin/b1; then
-          git checkout b1
-          git pull origin main  # Atualize a branch b1 com a main usando rebase
+        # Verifique se a branch br1 existe
+        if git show-ref --quiet refs/remotes/origin/br1; then
+          git checkout br1
+          git pull origin main  # Atualize a branch br1 com a main usando rebase
 
-          # Mova todos os arquivos, exceto pastab e .github, da branch main para b1
+          # Mova todos os arquivos, exceto pastab e .github, da branch main para br1
           git checkout main -- .
           git checkout -- pastab .github
           git reset pastab .github
           git add .
-          git commit -m "Mover arquivos da branch main para b1"
+          git commit -m "Mover arquivos da branch main para br1"
         else
-          echo "A branch 'b1' não existe no repositório."
+          echo "A branch 'br1' não existe no repositório."
         fi
 
         # Verifique se a branch b2 existe
@@ -58,6 +58,6 @@ jobs:
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
 
-        # Agora, todos os arquivos, exceto pastab e .github, estarão nas branches b1 e b2
-        git push origin b1
+        # Agora, todos os arquivos, exceto pastab e .github, estarão nas branches br1 e b2
+        git push origin br1
         git push origin b2
