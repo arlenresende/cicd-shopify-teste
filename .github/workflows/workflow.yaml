@@ -45,13 +45,19 @@ jobs:
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
 
+          # Remova a pasta .github após a atualização da branch b1
+          git rm -r --cached .github
+
+          # Ignorar arquivos não rastreados em .github para evitar conflitos
+          git clean -f .github
+
           # Remova a pasta pastab após a atualização da branch b1
           git rm -r --cached pastab
 
           # Ignorar arquivos não rastreados em pastab para evitar conflitos
           git clean -f pastab
 
-          git commit -m "Remover pastab da branch b1"
+          git commit -m "Remover .github e pastab da branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -61,24 +67,30 @@ jobs:
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
 
+          # Remova a pasta .github após a atualização da branch b2
+          git rm -r --cached .github
+
+          # Ignorar arquivos não rastreados em .github para evitar conflitos
+          git clean -f .github
+
           # Remova a pasta pastab após a atualização da branch b2
           git rm -r --cached pastab
 
           # Ignorar arquivos não rastreados em pastab para evitar conflitos
           git clean -f pastab
 
-          git commit -m "Remover pastab da branch b2"
+          git commit -m "Remover .github e pastab da branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, a pasta pastab não estará nas branches b1 e b2
+        # Agora, a pasta .github e pastab não estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
 
-        # Restaure a pasta pastab na branch main
+        # Restaure a pasta .github e pastab na branch main
         git checkout main
-        git checkout main -- pastab
-        git add pastab
-        git commit -m "Restaurar pastab na branch main"
+        git checkout main -- .github pastab
+        git add .github pastab
+        git commit -m "Restaurar .github e pastab na branch main"
         git push origin main
