@@ -22,11 +22,15 @@ jobs:
 
     - name: Mover todos os arquivos, exceto pastab e .github, para a branch br1
       run: |
-        git fetch
+        git remote update
+        git fetch 
         git checkout br1
         git pull origin main  # Atualize a branch br1 com a main usando rebase
 
-       
+        # Remova todas as pastas existentes na branch br1 (exceto pastab e .github)
+        git rm -r --cached .
+        git clean -fd
+
         # Move todos os arquivos da branch main para br1 (exceto pastab e .github)
         git checkout main -- .
         git checkout -- pastab .github
@@ -37,10 +41,14 @@ jobs:
 
     - name: Mover todos os arquivos, exceto pastab e .github, para a branch br2
       run: |
-        git fetch
+        git remote update
+        git fetch 
         git checkout br2
         git pull origin main  # Atualize a branch br2 com a main usando rebase
 
+        # Remova todas as pastas existentes na branch br2 (exceto pastab e .github)
+        git rm -r --cached .
+        git clean -fd
 
         # Move todos os arquivos da branch main para br2 (exceto pastab e .github)
         git checkout main -- .
