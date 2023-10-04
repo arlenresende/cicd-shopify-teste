@@ -29,10 +29,17 @@ jobs:
         git rm -r --cached pastab
 
         # Ignorar arquivos não rastreados em pastab e .github para evitar conflitos
-        git clean -f pastab
+        git clean -f pastab .github
+
+        # Adicione um arquivo temporário antes de efetuar o commit
+        touch temp.txt
+        git add temp.txt
 
         # Faça o commit das alterações, forçando a reescrita dos arquivos
         git commit -m "Remover pastab do branch main"
+
+        # Remova o arquivo temporário
+        rm temp.txt
 
         # Restaure a pasta .github na branch main
         git checkout main -- .github
@@ -56,7 +63,15 @@ jobs:
           # Ignorar arquivos não rastreados em pastab para evitar conflitos
           git clean -f pastab
 
+          # Adicione um arquivo temporário antes de efetuar o commit
+          touch temp.txt
+          git add temp.txt
+
+          # Faça o commit das alterações, forçando a reescrita dos arquivos
           git commit -m "Remover pastab da branch b1"
+
+          # Remova o arquivo temporário
+          rm temp.txt
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -72,7 +87,15 @@ jobs:
           # Ignorar arquivos não rastreados em pastab para evitar conflitos
           git clean -f pastab
 
+          # Adicione um arquivo temporário antes de efetuar o commit
+          touch temp.txt
+          git add temp.txt
+
+          # Faça o commit das alterações, forçando a reescrita dos arquivos
           git commit -m "Remover pastab da branch b2"
+
+          # Remova o arquivo temporário
+          rm temp.txt
         else
           echo "A branch 'b2' não existe no repositório."
         fi
@@ -80,4 +103,3 @@ jobs:
         # Agora, as pastas pastab não estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
-
