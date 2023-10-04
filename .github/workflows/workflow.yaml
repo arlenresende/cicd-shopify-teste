@@ -44,6 +44,10 @@ jobs:
 
           # Remova a pasta pastab após a atualização da branch b1
           git rm -r --cached pastab
+
+          # Ignorar arquivos não rastreados em pastab para evitar conflitos
+          git clean -f pastab
+
           git commit -m "Remover pastab da branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
@@ -56,6 +60,10 @@ jobs:
 
           # Remova a pasta pastab após a atualização da branch b2
           git rm -r --cached pastab
+
+          # Ignorar arquivos não rastreados em pastab para evitar conflitos
+          git clean -f pastab
+
           git commit -m "Remover pastab da branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
