@@ -20,77 +20,44 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
-    - name: Atualizar branch br1
+    - name: Mover arquivos, exceto pastab e .github, para a branch br1
       run: |
-        # Certifique-se de que a branch br1 existe no repositório
-        if ! git show-ref --quiet refs/remotes/origin/br1; then
-          git branch br1
-          git push origin br1
-        fi
+        # Verifique se a branch br1 existe
+        if git show-ref --quiet refs/remotes/origin/br1; then
+          git checkout br1
+          git pull origin main  # Atualize a branch br1 com a main usando rebase
 
-        # Certifique-se de estar na branch br1
-        git checkout br1
-
-        # Limpe a branch br1, mantendo apenas pastab e .github
-        git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git rm --cached
-
-        # Faça o commit das alterações
-        git commit -m "Limpar branch br1"
-
-        # Verifique se a branch main existe
-        if git show-ref --quiet refs/remotes/origin/main; then
-          git checkout main
-
-          # Copie todos os arquivos da branch main, exceto pastab e .github
-          git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git checkout main --
+          # Remova todos os arquivos, exceto pastab e .github
+          git ls-files | grep -v -E '^pastab/|^\.github/' | xargs rm
 
           # Faça o commit das alterações
-          git commit -m "Atualizar branch br1 com arquivos da main"
+          git commit -am "Limpar branch br1"
+        else
+          echo "A branch 'br1' não existe no repositório."
         fi
 
-        # Empurre as alterações para a branch br1
-        git push origin br1
-
-    - name: Atualizar branch br2
+    - name: Mover arquivos, exceto pastab e .github, para a branch br2
       run: |
-        # Certifique-se de que a branch br2 existe no repositório
-        if ! git show-ref --quiet refs/remotes/origin/br2; then
-          git branch br2
-          git push origin br2
-        fi
+        # Verifique se a branch br2 existe
+        if git show-ref --quiet refs/remotes/origin/br2; then
+          git checkout br2
+          git pull origin main  # Atualize a branch br2 com a main usando rebase
 
-        # Certifique-se de estar na branch br2
-        git checkout br2
-
-        # Limpe a branch br2, mantendo apenas pastab e .github
-        git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git rm --cached
-
-        # Faça o commit das alterações
-        git commit -m "Limpar branch br2"
-
-        # Verifique se a branch main existe
-        if git show-ref --quiet refs/remotes/origin/main; then
-          git checkout main
-
-          # Copie todos os arquivos da branch main, exceto pastab e .github
-          git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git checkout main --
+          # Remova todos os arquivos, exceto pastab e .github
+          git ls-files | grep -v -E '^pastab/|^\.github/' | xargs rm
 
           # Faça o commit das alterações
-          git commit -m "Atualizar branch br2 com arquivos da main"
+          git commit -am "Limpar branch br2"
+        else
+          echo "A branch 'br2' não existe no repositório."
         fi
-
-        # Empurre as alterações para a branch br2
-        git push origin br2
 
     - name: Usar o Token de Acesso Pessoal
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        # Certifique-se de buscar todas as branches remotas
-        git fetch --all
+        git fetch --all  # Certifique-se de buscar todas as branches remotas
 
-        # Empurre as branches br1 e br2 atualizadas para o repositório remoto
+        # Envie as alterações para as branches br1 e br2
         git push origin br1
         git push origin br2
-
-
