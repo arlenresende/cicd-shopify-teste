@@ -27,44 +27,44 @@ jobs:
           git clean -f -d  # Descarte os arquivos não rastreados
         fi
 
-    - name: Usar o Token de Acesso Pessoal (testea)
+    - name: Usar o Token de Acesso Pessoal (testa)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
-        if git show-ref --quiet refs/remotes/origin/testea; then
-          git checkout testea
-          git pull origin main  # Atualize a branch testea com a main usando rebase
-          git rm -r --cached pastab  # Remova a pastab da branch testea
-          git commit -m "Remover a pastab da branch testea"
-          git push origin testea --force
+        if git show-ref --quiet refs/remotes/origin/testa; then
+          git checkout testa
+          git pull origin main  # Atualize a branch testa com a main usando rebase
+          git rm -r --cached pastab  # Remova a pastab da branch testa
+          git commit -m "Remover a pastab da branch testa"
+          git push origin testa --force
         else
-          echo "A branch 'testea' não existe no repositório."
+          echo "A branch 'testa' não existe no repositório."
         fi
 
-    - name: Verificar e descartar arquivos não rastreados (testea)
+    - name: Verificar e descartar arquivos não rastreados (testa)
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
         if git status --porcelain | grep "^\?\?"; then
           git clean -f -d  # Descarte os arquivos não rastreados
         fi
 
-    - name: Usar o Token de Acesso Pessoal (testeb)
+    - name: Usar o Token de Acesso Pessoal (testb)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
-        if git show-ref --quiet refs/remotes/origin/testeb; then
-          git checkout testeb
-          git pull origin main  # Atualize a branch testeb com a main usando rebase
-          git rm -r --cached pastab  # Remova a pastab da branch testeb
-          git commit -m "Remover a pastab da branch testeb"
-          git push origin testeb --force
+        if git show-ref --quiet refs/remotes/origin/testb; then
+          git checkout testb
+          git pull origin main  # Atualize a branch testb com a main usando rebase
+          git rm -r --cached pastab  # Remova a pastab da branch testb
+          git commit -m "Remover a pastab da branch testb"
+          git push origin testb --force
         else
-          echo "A branch 'testeb' não existe no repositório."
+          echo "A branch 'testb' não existe no repositório."
         fi
 
-    - name: Verificar e descartar arquivos não rastreados (testeb)
+    - name: Verificar e descartar arquivos não rastreados (testb)
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
         if git status --porcelain | grep "^\?\?"; then
