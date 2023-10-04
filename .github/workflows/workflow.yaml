@@ -20,33 +20,19 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
-    - name: Remover a pastab da branch main
-      run: |
-        # Certifique-se de estar na branch main
-        git checkout main
-
-        # Restaure a pasta pastab na branch main, se ela foi removida em commits anteriores
-        git checkout main -- pastab
-        git add pastab
-        git commit -m "Restaurar pastab na branch main"
-
-    - name: Remover a pasta .github das branches b1 e b2
+    - name: Mover todos os arquivos, exceto pastab e .github, para as branches b1 e b2
       run: |
         # Verifique se a branch b1 existe
         if git show-ref --quiet refs/remotes/origin/b1; then
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
 
-          # Remova a pasta .github após a atualização da branch b1
-          git rm -r .github
-
-          # Faça o commit da remoção da pasta
-          git commit -m "Remover .github da branch b1"
-
-          # Restaure a pasta .github na branch b1
-          git checkout main -- .github
-          git add .github
-          git commit -m "Restaurar .github na branch b1"
+          # Mova todos os arquivos, exceto pastab e .github, da branch main para b1
+          git checkout main -- .
+          git checkout -- pastab .github
+          git reset pastab .github
+          git add .
+          git commit -m "Mover arquivos da branch main para b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -56,16 +42,12 @@ jobs:
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
 
-          # Remova a pasta .github após a atualização da branch b2
-          git rm -r .github
-
-          # Faça o commit da remoção da pasta
-          git commit -m "Remover .github da branch b2"
-
-          # Restaure a pasta .github na branch b2
-          git checkout main -- .github
-          git add .github
-          git commit -m "Restaurar .github na branch b2"
+          # Mova todos os arquivos, exceto pastab e .github, da branch main para b2
+          git checkout main -- .
+          git checkout -- pastab .github
+          git reset pastab .github
+          git add .
+          git commit -m "Mover arquivos da branch main para b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
@@ -76,6 +58,6 @@ jobs:
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
 
-        # Agora, as pastas pastab e .github não estarão nas branches b1 e b2
+        # Agora, todos os arquivos, exceto pastab e .github, estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
