@@ -20,22 +20,22 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
-    - name: Atualizar branch b1
+    - name: Atualizar branch br1
       run: |
-        # Certifique-se de que a branch b1 existe no repositório
-        if ! git show-ref --quiet refs/remotes/origin/b1; then
-          git branch b1
-          git push origin b1
+        # Certifique-se de que a branch br1 existe no repositório
+        if ! git show-ref --quiet refs/remotes/origin/br1; then
+          git branch br1
+          git push origin br1
         fi
 
-        # Certifique-se de estar na branch b1
-        git checkout b1
+        # Certifique-se de estar na branch br1
+        git checkout br1
 
-        # Limpe a branch b1, mantendo apenas pastab e .github
+        # Limpe a branch br1, mantendo apenas pastab e .github
         git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git rm --cached
 
         # Faça o commit das alterações
-        git commit -m "Limpar branch b1"
+        git commit -m "Limpar branch br1"
 
         # Verifique se a branch main existe
         if git show-ref --quiet refs/remotes/origin/main; then
@@ -45,28 +45,28 @@ jobs:
           git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git checkout main --
 
           # Faça o commit das alterações
-          git commit -m "Atualizar branch b1 com arquivos da main"
+          git commit -m "Atualizar branch br1 com arquivos da main"
         fi
 
-        # Empurre as alterações para a branch b1
-        git push origin b1
+        # Empurre as alterações para a branch br1
+        git push origin br1
 
-    - name: Atualizar branch b2
+    - name: Atualizar branch br2
       run: |
-        # Certifique-se de que a branch b2 existe no repositório
-        if ! git show-ref --quiet refs/remotes/origin/b2; then
-          git branch b2
-          git push origin b2
+        # Certifique-se de que a branch br2 existe no repositório
+        if ! git show-ref --quiet refs/remotes/origin/br2; then
+          git branch br2
+          git push origin br2
         fi
 
-        # Certifique-se de estar na branch b2
-        git checkout b2
+        # Certifique-se de estar na branch br2
+        git checkout br2
 
-        # Limpe a branch b2, mantendo apenas pastab e .github
+        # Limpe a branch br2, mantendo apenas pastab e .github
         git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git rm --cached
 
         # Faça o commit das alterações
-        git commit -m "Limpar branch b2"
+        git commit -m "Limpar branch br2"
 
         # Verifique se a branch main existe
         if git show-ref --quiet refs/remotes/origin/main; then
@@ -76,11 +76,11 @@ jobs:
           git ls-files --cached --full-name | grep -v 'pastab/' | grep -v '.github/' | xargs git checkout main --
 
           # Faça o commit das alterações
-          git commit -m "Atualizar branch b2 com arquivos da main"
+          git commit -m "Atualizar branch br2 com arquivos da main"
         fi
 
-        # Empurre as alterações para a branch b2
-        git push origin b2
+        # Empurre as alterações para a branch br2
+        git push origin br2
 
     - name: Usar o Token de Acesso Pessoal
       env:
@@ -89,8 +89,8 @@ jobs:
         # Certifique-se de buscar todas as branches remotas
         git fetch --all
 
-        # Empurre as branches b1 e b2 atualizadas para o repositório remoto
-        git push origin b1
-        git push origin b2
+        # Empurre as branches br1 e br2 atualizadas para o repositório remoto
+        git push origin br1
+        git push origin br2
 
-        
+
