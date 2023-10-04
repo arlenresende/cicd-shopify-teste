@@ -42,10 +42,9 @@ jobs:
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
 
-          # Restaure a pasta pastab após a atualização da branch b1
-          git checkout main -- pastab
-          git add pastab
-          git commit -m "Restaurar pastab na branch b1"
+          # Remova a pasta pastab após a atualização da branch b1
+          git rm -r --cached pastab
+          git commit -m "Remover pastab da branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -55,12 +54,20 @@ jobs:
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
 
-          # Restaure a pasta pastab após a atualização da branch b2
-          git checkout main -- pastab
-          git add pastab
-          git commit -m "Restaurar pastab na branch b2"
+          # Remova a pasta pastab após a atualização da branch b2
+          git rm -r --cached pastab
+          git commit -m "Remover pastab da branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, as past
+        # Agora, a pasta pastab não estará nas branches b1 e b2
+        git push origin b1
+        git push origin b2
+
+        # Restaure a pasta pastab na branch main
+        git checkout main
+        git checkout main -- pastab
+        git add pastab
+        git commit -m "Restaurar pastab na branch main"
+        git push origin main
