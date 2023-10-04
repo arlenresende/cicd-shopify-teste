@@ -31,13 +31,6 @@ jobs:
         # Faça o commit das alterações, forçando a reescrita dos arquivos
         git commit -m "Remover pastab do branch main"
 
-        # Limpe os arquivos não rastreados em pastab
-        git clean -f pastab
-
-    - name: Verificar se a branch main está limpa
-      run: |
-        git diff-index --quiet HEAD --
-
     - name: Usar o Token de Acesso Pessoal
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,6 +63,4 @@ jobs:
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, as pastas pastab não estarão nas branches b1 e b2
-        git push origin b1
-        git push origin b2
+        # Agora, as past
