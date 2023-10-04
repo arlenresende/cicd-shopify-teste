@@ -7,7 +7,7 @@ on:
 jobs:
   atualizar-branches-de-teste:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout do código-fonte
       uses: actions/checkout@v2
@@ -20,27 +20,32 @@ jobs:
     - name: Configurar rebase para pull
       run: git config pull.rebase true
 
+    - name: Remover a pastab da branch main
+      run: |
+        # Certifique-se de estar na branch main
+        git checkout main
+
+        # Remova a pasta pastab do diretório de trabalho, mas não do histórico do Git
+        git rm -r --cached pastab
+
+        # Faça o commit das alterações, forçando a reescrita dos arquivos
+        git commit -m "Remover pastab do branch main"
+
     - name: Usar o Token de Acesso Pessoal
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git fetch --all  # Certifique-se de buscar todas as branches remotas
 
-        # Certifique-se de que a pasta pastab e .github não sejam rastreadas
-        git rm -r --cached pastab .github
-
-        # Faça o commit das alterações, forçando a reescrita dos arquivos
-        git commit -m "Remover pastab e .github da index"
-
         # Verifique se a branch b1 existe
         if git show-ref --quiet refs/remotes/origin/b1; then
           git checkout b1
           git pull origin main  # Atualize a branch b1 com a main usando rebase
 
-          # Restaure a pasta pastab e .github após a atualização da branch b1
-          git checkout main -- pastab .github
-          git add pastab .github
-          git commit -m "Restaurar pastab e .github na branch b1"
+          # Restaure a pasta pastab após a atualização da branch b1
+          git checkout main -- pastab
+          git add pastab
+          git commit -m "Restaurar pastab na branch b1"
         else
           echo "A branch 'b1' não existe no repositório."
         fi
@@ -50,20 +55,14 @@ jobs:
           git checkout b2
           git pull origin main  # Atualize a branch b2 com a main usando rebase
 
-          # Restaure a pasta pastab e .github após a atualização da branch b2
-          git checkout main -- pastab .github
-          git add pastab .github
-          git commit -m "Restaurar pastab e .github na branch b2"
+          # Restaure a pasta pastab após a atualização da branch b2
+          git checkout main -- pastab
+          git add pastab
+          git commit -m "Restaurar pastab na branch b2"
         else
           echo "A branch 'b2' não existe no repositório."
         fi
 
-        # Agora, as pastas pastab e .github não estarão nas branches b1 e b2
+        # Agora, as pastas pastab não estarão nas branches b1 e b2
         git push origin b1
         git push origin b2
-
-        # Para garantir que as pastas permaneçam na branch main, faça um commit adicional
-        git checkout main
-        git add pastab .github
-        git commit -m "Manter pastab e .github na branch main"
-        git push origin main
