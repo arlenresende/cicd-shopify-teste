@@ -37,6 +37,7 @@ jobs:
           git reset pastab .github
           git add .
           git commit -m "Mover arquivos da branch main para br1"
+          git push origin br1
         else
           echo "A branch 'br1' não existe no repositório."
         fi
@@ -56,15 +57,7 @@ jobs:
           git reset pastab .github
           git add .
           git commit -m "Mover arquivos da branch main para br2"
+          git push origin br2
         else
           echo "A branch 'br2' não existe no repositório."
         fi
-
-    - name: Usar o Token de Acesso Pessoal
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git fetch --all  # Certifique-se de buscar todas as branches remotas
-
-        git push origin br1
-        git push origin br2
