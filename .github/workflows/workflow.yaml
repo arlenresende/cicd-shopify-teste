@@ -31,6 +31,13 @@ jobs:
         # Faça o commit das alterações, forçando a reescrita dos arquivos
         git commit -m "Remover pastab do branch main"
 
+        # Limpe os arquivos não rastreados em pastab
+        git clean -f pastab
+
+    - name: Verificar se a branch main está limpa
+      run: |
+        git diff-index --quiet HEAD --
+
     - name: Usar o Token de Acesso Pessoal
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
